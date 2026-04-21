@@ -7,16 +7,17 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-       --black: #14213d;
-      --off-white: #f8f5ef;
-      --yellow: #ffd45a;
-      --yellow-dim: #d4aa2a;
-      --green: #4be38f;
-      --green-dim: #31b870;
-      --gray: #1b2f52;
-      --gray-mid: #274066;
-      --gray-light: #7f9cc9;
-      --text-muted: #c2ccda;
+      --black: #0f1b2d;
+      --off-white: #f9fafb;
+      --yellow: #ffd84d;
+      --yellow-dim: #d8b43b;
+      --green: #59e3a7;
+      --green-dim: #3fbe88;
+      --gray: #1e2f4d;
+      --gray-mid: #2a4168;
+      --gray-light: #9bb3d3;
+      --text-muted: #d7e1f0;
+      --border-soft: rgba(255,255,255,0.12);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -264,7 +265,7 @@
     .intro-text p {
       font-size: 1rem;
       line-height: 1.85;
-      color: #c8c0b4;
+      color: var (--text-muted);
       margin-bottom: 1.2rem;
     }
 
@@ -376,12 +377,12 @@
     }
 
     .vehicle-card {
-      background: var(--black);
-      border: 1px solid #2a2a2a;
+      background: var(--gray-mid);
+      border: 1px solid var(--border-soft);
       padding: 1.8rem;
       position: relative;
       overflow: hidden;
-      transition: border-color 0.25s;
+      transition: border-color 0.25s, transform 0.2s;
     }
 
     .vehicle-card:hover { border-color: var(--yellow-dim); }
@@ -425,8 +426,8 @@
     }
 
     .var-group {
-      background: var(--black);
-      border: 1px solid #2a2a2a;
+      background: var(--gray-mid);
+      border: 1px solid var(--border-soft);
       padding: 1.8rem;
     }
 
@@ -445,9 +446,9 @@
 
     .var-list li {
       font-size: 0.88rem;
-      color: #999;
+      color: var(--text-muted);
       padding: 0.45rem 0;
-      border-bottom: 1px solid #1c1c1c;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       line-height: 1.5;
     }
 
@@ -463,14 +464,15 @@
     .method-text p {
       font-size: 1rem;
       line-height: 1.85;
-      color: #c8c0b4;
+      color: var(--text-muted);
       margin-bottom: 1.2rem;
     }
 
     .did-diagram {
-      background: var(--gray);
-      border: 1px solid #2a2a2a;
+       background: var(--gray-mid);
+      border: 1px solid var(--border-soft);
       padding: 2rem;
+      border-radius: 10px;
     }
 
     .did-diagram h3 {
@@ -494,12 +496,21 @@
 
     .did-cell {
       padding: 0.8rem 0.5rem;
-      border: 1px solid #2a2a2a;
-      color: #aaa;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--off-white);
+      background: rgba(255,255,255,0.03);
     }
 
-    .did-cell.header { color: var(--yellow); border-color: #3a3a3a; }
-    .did-cell.highlight { background: rgba(245,200,66,0.08); color: var(--off-white); border-color: var(--yellow-dim); }
+    .did-cell.header { color: var(--yellow);
+      border-color: rgba(255,216,77,0.35);
+      background: rgba(255,216,77,0.08);
+    }
+    .did-cell.highlight { 
+      background: rgba(255,216,77,0.18);
+      color: var(--off-white);
+      border-color: rgba(255,216,77,0.55);
+      font-weight: 500; 
+    }
 
     /* ── PIPELINE ── */
     #pipeline { background: var(--gray); }
@@ -526,17 +537,17 @@
     .step-number {
       font-family: 'DM Serif Display', serif;
       font-size: 3rem;
-      color: #2a2a2a;
+      color: rgba(255,255,255,0.22);
       line-height: 1;
       text-align: right;
       padding-top: 0.2rem;
     }
 
     .step-content {
-      background: var(--black);
-      border: 1px solid #2a2a2a;
+      background: var(--gray-mid);
+      border: 1px solid var(--border-soft);
       padding: 1.8rem;
-      transition: border-color 0.25s;
+      transition: border-color 0.25s, transform 0.2s;
     }
 
     .step-content:hover { border-color: #3a3a3a; }
@@ -606,8 +617,8 @@
     }
 
     .finding-slot {
-      background: var(--gray);
-      border: 1px dashed #2a2a2a;
+      background: var(--gray-mid);
+      border: 1px dashed rgba(255,255,255,0.16);
       padding: 2.5rem 1.5rem;
       text-align: center;
       min-height: 220px;
@@ -616,6 +627,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.8rem;
+      border-radius: 10px;
     }
 
     .finding-slot-icon {
@@ -626,7 +638,7 @@
     .finding-slot-label {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
-      color: #444;
+      color: var(--text-muted);
       letter-spacing: 0.15em;
       text-transform: uppercase;
     }
@@ -644,10 +656,12 @@
     }
 
     .team-card {
-      background: var(--gray);
-      border: 1px solid #2a2a2a;
+      .team-card {
+      background: var(--gray-mid);
+      border: 1px solid var(--border-soft);
       padding: 2rem 1.5rem;
       text-align: center;
+      border-radius: 10px;
     }
 
     .team-initial {
@@ -695,7 +709,7 @@
     .footer-right {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
-      color: #333;
+      color: var(--text-muted);
     }
 
     /* ── ANIMATIONS ── */
@@ -766,9 +780,9 @@
       <div class="map-visual">
         <svg viewBox="0 0 380 500" xmlns="http://www.w3.org/2000/svg">
           <!-- Background -->
-          <rect width="380" height="500" fill="#111"/>
+          <rect width="380" height="500" fill="#1a2b46"/>
           <!-- Grid lines -->
-          <g stroke="#1e1e1e" stroke-width="1">
+          <g stroke="#3b547a" stroke-width="1">
             <line x1="50" y1="0" x2="50" y2="500"/>
             <line x1="100" y1="0" x2="100" y2="500"/>
             <line x1="150" y1="0" x2="150" y2="500"/>
@@ -801,10 +815,10 @@
           <circle cx="205" cy="300" r="2" fill="#f5c842" opacity="0.4"/>
           <circle cx="185" cy="350" r="2" fill="#f5c842" opacity="0.3"/>
           <!-- Outer boroughs suggestion -->
-          <circle cx="310" cy="200" r="30" fill="none" stroke="#222" stroke-width="1"/>
-          <text x="295" y="205" fill="#444" font-size="8" font-family="monospace">Queens</text>
-          <circle cx="80" cy="350" r="25" fill="none" stroke="#222" stroke-width="1"/>
-          <text x="62" y="355" fill="#444" font-size="8" font-family="monospace">Brooklyn</text>
+          <circle cx="310" cy="200" r="30" fill="none" stroke="#3b547a" stroke-width="1"/>
+          <text x="295" y="205" fill="#cbd5e1" font-size="8" font-family="monospace">Queens</text>
+          <circle cx="80" cy="350" r="25" fill="none" stroke="#3b547a" stroke-width="1"/>
+          <text x="62" y="355" fill="#cbd5e1" font-size="8" font-family="monospace">Brooklyn</text>
           <!-- Trip lines -->
           <line x1="310" y1="200" x2="190" y2="270" stroke="#7c9eff" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,3"/>
           <line x1="80" y1="350" x2="185" y2="330" stroke="#ff7c7c" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,3"/>
@@ -994,7 +1008,7 @@
             <div class="did-cell">C</div>
             <div class="did-cell">D</div>
           </div>
-          <p style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#555;margin-top:1.2rem;line-height:1.6;">
+          <p style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--text-muted);margin-top:1.2rem;line-height:1.6;">
             DiD Estimate = (B − A) − (D − C)
           </p>
         </div>
