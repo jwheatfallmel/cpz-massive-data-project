@@ -3,19 +3,1115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Massive Data Final Project Website</title>
+  <title>CPZ Impact Study — NYC Congestion Pricing & For-Hire Vehicles</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --black: #0a0a0a;
+      --off-white: #f0ece3;
+      --yellow: #f5c842;
+      --yellow-dim: #c9a230;
+      --green: #3ddc84;
+      --green-dim: #2aad65;
+      --gray: #1c1c1c;
+      --gray-mid: #2e2e2e;
+      --gray-light: #555;
+      --text-muted: #888;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
+      background-color: var(--black);
+      color: var(--off-white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1f1f1f;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--yellow);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--off-white); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      padding: 6rem 3rem 4rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--yellow);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 5rem);
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--yellow);
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-authors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .author-chip {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.35rem 0.85rem;
+      border: 1px solid #333;
+      border-radius: 2px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 3rem;
+      opacity: 0;
+      animation: fadeIn 1.2s 1s forwards;
+    }
+
+    /* NYC Grid Map Visual */
+    .map-visual {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .map-visual svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .cpz-badge {
+      position: absolute;
+      bottom: 2rem;
+      right: 1rem;
+      background: var(--yellow);
+      color: var(--black);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 0.5rem 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-stat-strip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid #1f1f1f;
+      opacity: 0;
+      animation: fadeIn 1s 1.2s forwards;
+    }
+
+    .stat-cell {
+      padding: 1.5rem 2rem;
+      border-right: 1px solid #1f1f1f;
+    }
+
+    .stat-cell:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--yellow);
+      display: block;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: #1f1f1f;
+      margin: 0;
+    }
+
+    /* ── INTRODUCTION ── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .intro-text p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #c8c0b4;
+      margin-bottom: 1.2rem;
+    }
+
+    .research-q-box {
+      background: var(--gray);
+      border-left: 3px solid var(--yellow);
+      padding: 2rem;
+      margin-top: 1rem;
+    }
+
+    .research-q-box .rq-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .research-q-box p {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--off-white);
+    }
+
+    .cpz-info-card {
+      background: var(--gray);
+      padding: 2rem;
+      border: 1px solid #2a2a2a;
+    }
+
+    .cpz-info-card h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+    }
+
+    .toll-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid #2a2a2a;
+      font-size: 0.9rem;
+    }
+
+    .toll-item:last-child { border-bottom: none; }
+
+    .toll-amount {
+      font-family: 'DM Mono', monospace;
+      color: var(--yellow);
+      font-size: 1rem;
+    }
+
+    .policy-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    /* ── DATA ── */
+    #data { background: var(--gray); }
+    #data > * { max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+    .data-section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 4rem;
+    }
+
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .vehicle-card {
+      background: var(--black);
+      border: 1px solid #2a2a2a;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+
+    .vehicle-card:hover { border-color: var(--yellow-dim); }
+
+    .vehicle-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .vehicle-card.yellow::before { background: var(--yellow); }
+    .vehicle-card.green-card::before { background: var(--green); }
+    .vehicle-card.fhv::before { background: #7c9eff; }
+    .vehicle-card.hvfhv::before { background: #ff7c7c; }
+
+    .vehicle-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .vehicle-volume {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .vehicle-desc {
+      font-size: 0.88rem;
+      color: #999;
+      line-height: 1.6;
+    }
+
+    .variables-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .var-group {
+      background: var(--black);
+      border: 1px solid #2a2a2a;
+      padding: 1.8rem;
+    }
+
+    .var-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .var-list {
+      list-style: none;
+    }
+
+    .var-list li {
+      font-size: 0.88rem;
+      color: #999;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid #1c1c1c;
+      line-height: 1.5;
+    }
+
+    .var-list li:last-child { border-bottom: none; }
+
+    /* ── METHODOLOGY ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 4rem;
+    }
+
+    .method-text p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #c8c0b4;
+      margin-bottom: 1.2rem;
+    }
+
+    .did-diagram {
+      background: var(--gray);
+      border: 1px solid #2a2a2a;
+      padding: 2rem;
+    }
+
+    .did-diagram h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .did-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
       text-align: center;
-      padding: 50px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+    }
+
+    .did-cell {
+      padding: 0.8rem 0.5rem;
+      border: 1px solid #2a2a2a;
+      color: #aaa;
+    }
+
+    .did-cell.header { color: var(--yellow); border-color: #3a3a3a; }
+    .did-cell.highlight { background: rgba(245,200,66,0.08); color: var(--off-white); border-color: var(--yellow-dim); }
+
+    /* ── PIPELINE ── */
+    #pipeline { background: var(--gray); }
+
+    .pipeline-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 4rem;
+    }
+
+    .pipeline-steps {
+      position: relative;
+      margin-top: 3rem;
+    }
+
+    .pipeline-step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      align-items: start;
+    }
+
+    .step-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3rem;
+      color: #2a2a2a;
+      line-height: 1;
+      text-align: right;
+      padding-top: 0.2rem;
+    }
+
+    .step-content {
+      background: var(--black);
+      border: 1px solid #2a2a2a;
+      padding: 1.8rem;
+      transition: border-color 0.25s;
+    }
+
+    .step-content:hover { border-color: #3a3a3a; }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .step-tool {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--yellow);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: rgba(245,200,66,0.08);
+      padding: 0.25rem 0.6rem;
+      border: 1px solid rgba(245,200,66,0.2);
+    }
+
+    .step-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    /* ── FINDINGS ── */
+    .findings-placeholder {
+      border: 1px dashed #333;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .findings-placeholder::before {
+      content: 'COMING SOON';
+      position: absolute;
+      top: -0.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--black);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--yellow);
+      letter-spacing: 0.25em;
+      padding: 0 1rem;
+    }
+
+    .findings-placeholder p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .finding-slot {
+      background: var(--gray);
+      border: 1px dashed #2a2a2a;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+
+    .finding-slot-icon {
+      font-size: 1.8rem;
+      opacity: 0.3;
+    }
+
+    .finding-slot-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: #444;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* Add your charts here later — example:
+       .findings-chart { width: 100%; height: 300px; }
+    */
+
+    /* ── TEAM ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .team-card {
+      background: var(--gray);
+      border: 1px solid #2a2a2a;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .team-initial {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      color: var(--yellow);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .team-name {
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .team-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid #1f1f1f;
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-left strong {
+      color: var(--off-white);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: #333;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-stat-strip { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 4rem 1.5rem; }
+      .intro-grid, .method-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .vehicle-grid { grid-template-columns: 1fr; }
+      .variables-grid { grid-template-columns: 1fr; }
+      .findings-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .data-section-inner, .pipeline-inner { padding: 4rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <h1>Massive Data Final Project Website</h1>
-  <p>Edit this page to get started.</p>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">PPOL 5206 · Project 2</span>
+    <ul class="nav-links">
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#methodology">Methodology</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#findings">Findings</a></li>
+      <li><a href="#team">Team</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <span class="hero-tag">NYC Congestion Pricing Study · 2025</span>
+      <h1 class="hero-title">
+        Effect of <em>Congestion Pricing</em> on For-Hire Vehicle Mobility
+      </h1>
+      <p class="hero-subtitle">
+        A causal analysis of how New York City's Congestion Pricing Zone policy
+        reshaped origin–destination trip volumes across taxis and for-hire vehicle platforms.
+      </p>
+      <div class="hero-authors">
+        <span class="author-chip">Ibadat Jarg</span>
+        <span class="author-chip">Josahn Oginga</span>
+        <span class="author-chip">Joya Wheatfall-Melvin</span>
+        <span class="author-chip">Muhammad Saad</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Stylised NYC grid -->
+      <div class="map-visual">
+        <svg viewBox="0 0 380 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background -->
+          <rect width="380" height="500" fill="#111"/>
+          <!-- Grid lines -->
+          <g stroke="#1e1e1e" stroke-width="1">
+            <line x1="50" y1="0" x2="50" y2="500"/>
+            <line x1="100" y1="0" x2="100" y2="500"/>
+            <line x1="150" y1="0" x2="150" y2="500"/>
+            <line x1="200" y1="0" x2="200" y2="500"/>
+            <line x1="250" y1="0" x2="250" y2="500"/>
+            <line x1="300" y1="0" x2="300" y2="500"/>
+            <line x1="350" y1="0" x2="350" y2="500"/>
+            <line x1="0" y1="50" x2="380" y2="50"/>
+            <line x1="0" y1="100" x2="380" y2="100"/>
+            <line x1="0" y1="150" x2="380" y2="150"/>
+            <line x1="0" y1="200" x2="380" y2="200"/>
+            <line x1="0" y1="250" x2="380" y2="250"/>
+            <line x1="0" y1="300" x2="380" y2="300"/>
+            <line x1="0" y1="350" x2="380" y2="350"/>
+            <line x1="0" y1="400" x2="380" y2="400"/>
+            <line x1="0" y1="450" x2="380" y2="450"/>
+          </g>
+          <!-- Manhattan outline (simplified) -->
+          <path d="M160,30 L220,30 L240,80 L250,160 L240,280 L220,360 L190,420 L170,420 L150,360 L140,280 L130,160 L140,80 Z"
+                fill="none" stroke="#333" stroke-width="1.5"/>
+          <!-- CPZ zone highlight (south of 60th St) -->
+          <path d="M152,220 L228,220 L240,280 L220,360 L190,420 L170,420 L150,360 L140,280 Z"
+                fill="rgba(245,200,66,0.12)" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- 60th St line -->
+          <line x1="140" y1="220" x2="245" y2="220" stroke="#f5c842" stroke-width="1" stroke-dasharray="6,3" opacity="0.6"/>
+          <text x="248" y="223" fill="#f5c842" font-size="9" font-family="monospace" opacity="0.8">60th St</text>
+          <!-- Dots for zones -->
+          <circle cx="190" cy="270" r="3" fill="#f5c842" opacity="0.6"/>
+          <circle cx="175" cy="310" r="2" fill="#f5c842" opacity="0.4"/>
+          <circle cx="205" cy="300" r="2" fill="#f5c842" opacity="0.4"/>
+          <circle cx="185" cy="350" r="2" fill="#f5c842" opacity="0.3"/>
+          <!-- Outer boroughs suggestion -->
+          <circle cx="310" cy="200" r="30" fill="none" stroke="#222" stroke-width="1"/>
+          <text x="295" y="205" fill="#444" font-size="8" font-family="monospace">Queens</text>
+          <circle cx="80" cy="350" r="25" fill="none" stroke="#222" stroke-width="1"/>
+          <text x="62" y="355" fill="#444" font-size="8" font-family="monospace">Brooklyn</text>
+          <!-- Trip lines -->
+          <line x1="310" y1="200" x2="190" y2="270" stroke="#7c9eff" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,3"/>
+          <line x1="80" y1="350" x2="185" y2="330" stroke="#ff7c7c" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,3"/>
+        </svg>
+        <div class="cpz-badge">CPZ ZONE ACTIVE</div>
+      </div>
+    </div>
+
+    <div class="hero-stat-strip">
+      <div class="stat-cell">
+        <span class="stat-value">Jan 5</span>
+        <span class="stat-label">Policy Start · 2025</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value">$0.75</span>
+        <span class="stat-label">Per Trip · Taxi & FHV</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value">263</span>
+        <span class="stat-label">NYC Taxi Zones</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value">DiD</span>
+        <span class="stat-label">Causal Strategy</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRODUCTION -->
+  <div class="divider"></div>
+  <section id="intro">
+    <div class="intro-grid">
+      <div class="intro-text">
+        <p class="section-label">01 · Introduction</p>
+        <h2 class="section-title">Setting the Scene</h2>
+        <p>
+          Starting January 5, 2025, New York City implemented a congestion pricing policy
+          charging vehicles for trips to a designated Congestion Pricing Zone (CPZ). The zone
+          covers Manhattan south of and including 60th Street, excluding select corridors
+          such as the FDR Drive, West Side Highway/Route 9A, and the Hugh Carey Tunnel.
+        </p>
+        <p>
+          The policy aims to reduce congestion, improve mobility, and improve air quality
+          across one of the world's densest urban environments. While other vehicles pay a
+          flat $9 daily toll, taxis and for-hire vehicles face a per-trip charge structure.
+        </p>
+
+        <div class="research-q-box">
+          <div class="rq-label">Research Question</div>
+          <p>What is the causal effect of congestion pricing on taxis and for-hire vehicles' mobility patterns?</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="cpz-info-card">
+          <h3>Toll Structure</h3>
+          <span class="policy-date">▶ EFFECTIVE 2025-01-05</span>
+          <div class="toll-item">
+            <span>Other vehicles (daily toll)</span>
+            <span class="toll-amount">$9.00</span>
+          </div>
+          <div class="toll-item">
+            <span>Taxis & FHV (per trip)</span>
+            <span class="toll-amount">$0.75</span>
+          </div>
+          <div class="toll-item">
+            <span>High-Volume FHV (per trip)</span>
+            <span class="toll-amount">$1.50</span>
+          </div>
+          <div class="toll-item">
+            <span>Yellow taxi CPZ share</span>
+            <span class="toll-amount">~75%</span>
+          </div>
+          <div class="toll-item">
+            <span>HVFHV CPZ share</span>
+            <span class="toll-amount">~38%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA -->
+  <div class="divider"></div>
+  <div id="data">
+    <div class="data-section-inner">
+      <p class="section-label">02 · Data</p>
+      <h2 class="section-title">NYC TLC Trip Data · Jan 2024 – Dec 2025</h2>
+
+      <div class="vehicle-grid">
+        <div class="vehicle-card yellow">
+          <div class="vehicle-name">Yellow Taxi</div>
+          <div class="vehicle-volume">≥ 3 MILLION TRIPS / MONTH</div>
+          <div class="vehicle-desc">Traditional metered taxis operating citywide, with approximately 75% of trips subject to the CPZ surcharge — the highest treatment exposure of any vehicle type studied.</div>
+        </div>
+        <div class="vehicle-card green-card">
+          <div class="vehicle-name">Green Taxi</div>
+          <div class="vehicle-volume">≥ 45,000 TRIPS / MONTH</div>
+          <div class="vehicle-desc">Boro taxis primarily serving upper Manhattan and the outer boroughs, providing a useful comparison group for within-city spillover effects.</div>
+        </div>
+        <div class="vehicle-card fhv">
+          <div class="vehicle-name">For-Hire Vehicles (FHV)</div>
+          <div class="vehicle-volume">≥ 175,000 TRIPS / MONTH</div>
+          <div class="vehicle-desc">Includes platforms such as traditional black car services. Subject to the $0.75 per-trip CPZ charge when entering or leaving the congestion zone.</div>
+        </div>
+        <div class="vehicle-card hvfhv">
+          <div class="vehicle-name">High-Volume FHV</div>
+          <div class="vehicle-volume">≥ 20 MILLION TRIPS / MONTH</div>
+          <div class="vehicle-desc">Platforms such as Uber and Lyft. Subject to the higher $1.50 per-trip charge; approximately 38% of HVFHV trips are charged a CPZ surcharge.</div>
+        </div>
+      </div>
+
+      <div class="variables-grid">
+        <div class="var-group">
+          <div class="var-group-title">Temporal Variables</div>
+          <ul class="var-list">
+            <li>Pickup datetime</li>
+            <li>Dropoff datetime</li>
+            <li>Trip duration (derived)</li>
+            <li>Time-of-day indicators</li>
+          </ul>
+        </div>
+        <div class="var-group">
+          <div class="var-group-title">Spatial Variables</div>
+          <ul class="var-list">
+            <li>Pickup Location ID (Taxi Zone)</li>
+            <li>Dropoff Location ID (Taxi Zone)</li>
+            <li>263 predefined NYC taxi zones</li>
+            <li>CPZ / non-CPZ classification</li>
+          </ul>
+        </div>
+        <div class="var-group">
+          <div class="var-group-title">Trip Characteristics</div>
+          <ul class="var-list">
+            <li>Trip distance</li>
+            <li>Passenger count</li>
+            <li>Fare components</li>
+            <li>Congestion surcharge flag</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="divider"></div>
+  <section id="methodology">
+    <p class="section-label">03 · Analytical Strategy</p>
+    <h2 class="section-title">Difference-in-Differences Design</h2>
+
+    <div class="method-grid">
+      <div class="method-text">
+        <p>
+          This study uses a Difference-in-Differences (DiD) approach to assess the impact
+          of the CPZ policy on total trip volume. An origin-destination record is constructed
+          at the trip level to analyze volumes for trips entering the CPZ (treated) and trips
+          outside it (control).
+        </p>
+        <p>
+          The treated group comprises trips that start or end within the congestion zone. The
+          control group consists of trips that remain entirely outside the zone. This design
+          exploits the sharp geographic and temporal boundary of the policy to isolate its
+          causal effect on trip patterns.
+        </p>
+        <p>
+          Pre-trend diagnostics will be used to test the parallel trends assumption, and
+          event-study specifications will be estimated to trace the dynamic effect of the
+          policy across weeks before and after implementation.
+        </p>
+      </div>
+
+      <div>
+        <div class="did-diagram">
+          <h3>DiD Framework</h3>
+          <div class="did-row">
+            <div class="did-cell header"></div>
+            <div class="did-cell header">Pre (2024)</div>
+            <div class="did-cell header">Post (2025)</div>
+          </div>
+          <div class="did-row">
+            <div class="did-cell header">Treated (CPZ trips)</div>
+            <div class="did-cell">A</div>
+            <div class="did-cell highlight">B</div>
+          </div>
+          <div class="did-row">
+            <div class="did-cell header">Control (non-CPZ trips)</div>
+            <div class="did-cell">C</div>
+            <div class="did-cell">D</div>
+          </div>
+          <p style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#555;margin-top:1.2rem;line-height:1.6;">
+            DiD Estimate = (B − A) − (D − C)
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <div class="divider"></div>
+  <div id="pipeline">
+    <div class="pipeline-inner">
+      <p class="section-label">04 · Technical Pipeline</p>
+      <h2 class="section-title">Production Cloud Analytics Workflow</h2>
+
+      <div class="pipeline-steps">
+        <div class="pipeline-step">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-tool">AWS S3 + Boto3</span>
+              <span class="step-title">Data Ingestion</span>
+            </div>
+            <p class="step-desc">Monthly TLC Parquet files (yellow, green, FHV, HVFHV) for Jan 2024 – Dec 2025 are downloaded via Boto3 and staged in an S3 bucket partitioned by service type and month. The TLC taxi zone lookup is staged alongside trip data to support spatial joins.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-tool">Databricks + Spark</span>
+              <span class="step-title">Data Transformation</span>
+            </div>
+            <p class="step-desc">Raw trip files are read into Spark DataFrames in Databricks notebooks. Each trip is joined to the taxi zone lookup to classify pickups and dropoffs as CPZ, Manhattan-above-60th, or outer-borough. An origin-destination trip-type flag is constructed, a post-treatment indicator (date ≥ 2025-01-05) is added, and trips are aggregated to the daily level.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-tool">Snowflake</span>
+              <span class="step-title">Analytical Querying</span>
+            </div>
+            <p class="step-desc">Curated aggregates are loaded into Snowflake for exploratory analysis and pre-trend checks using distributed SQL. This stage supports flexible querying across large volumes of aggregated data before causal modeling.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-tool">Python · statsmodels</span>
+              <span class="step-title">Causal Modeling</span>
+            </div>
+            <p class="step-desc">The aggregated daily series are pulled into Python to estimate the difference-in-differences specification using statsmodels. Parallel pre-trends are tested and robustness checks are run across all four service types.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-number">05</div>
+          <div class="step-content">
+            <div class="step-header">
+              <span class="step-tool">Python · GitHub Pages</span>
+              <span class="step-title">Visualization & Delivery</span>
+            </div>
+            <p class="step-desc">Event-study plots, pre-trend diagnostics, and choropleth maps of affected zones are produced in the notebook and embedded in this GitHub Pages project website alongside the paper and code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDINGS -->
+  <div class="divider"></div>
+  <section id="findings">
+    <p class="section-label">05 · Findings</p>
+    <h2 class="section-title">Results & Analysis</h2>
+
+    <div class="findings-placeholder">
+      <p>Analysis is currently in progress. Results, visualizations, and key findings<br>will be published here upon completion of the study.</p>
+    </div>
+
+    <div class="findings-grid">
+      <div class="finding-slot">
+        <div class="finding-slot-icon">📈</div>
+        <div class="finding-slot-label">Event-Study Plot</div>
+        <!-- Replace with: <img src="path/to/event_study.png" style="width:100%"> or embed chart -->
+      </div>
+      <div class="finding-slot">
+        <div class="finding-slot-icon">🗺️</div>
+        <div class="finding-slot-label">Choropleth Map</div>
+        <!-- Replace with: <img src="path/to/choropleth.png" style="width:100%"> -->
+      </div>
+      <div class="finding-slot">
+        <div class="finding-slot-icon">📊</div>
+        <div class="finding-slot-label">Pre-Trend Diagnostics</div>
+        <!-- Replace with: <img src="path/to/pretrend.png" style="width:100%"> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <div class="divider"></div>
+  <section id="team">
+    <p class="section-label">06 · The Team</p>
+    <h2 class="section-title">Contributors</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <span class="team-initial">IJ</span>
+        <div class="team-name">Ibadat Jarg</div>
+        <div class="team-role">Contributor · PPOL 5206</div>
+      </div>
+      <div class="team-card">
+        <span class="team-initial">JO</span>
+        <div class="team-name">Josahn Oginga</div>
+        <div class="team-role">Contributor · PPOL 5206</div>
+      </div>
+      <div class="team-card">
+        <span class="team-initial">JW</span>
+        <div class="team-name">Joya Wheatfall-Melvin</div>
+        <div class="team-role">Contributor · PPOL 5206</div>
+      </div>
+      <div class="team-card">
+        <span class="team-initial">MS</span>
+        <div class="team-name">Muhammad Saad</div>
+        <div class="team-role">Contributor · PPOL 5206</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-left">
+      <strong>CPZ Mobility Impact Study</strong>
+      PPOL 5206 · Massive Data Project 2 · Georgetown University, McCourt School of Public Policy
+    </div>
+    <div class="footer-right">
+      Data: NYC TLC · Policy: MTA · Jan 2024 – Dec 2025
+    </div>
+  </footer>
+
 </body>
 </html>
