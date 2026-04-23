@@ -588,7 +588,7 @@
       text-align: center;
       position: relative;
     }
-
+    
     .findings-placeholder::before {
       content: 'COMING SOON';
       position: absolute;
@@ -602,20 +602,20 @@
       letter-spacing: 0.25em;
       padding: 0 1rem;
     }
-
+    
     .findings-placeholder p {
       color: var(--text-muted);
       font-size: 0.9rem;
       line-height: 1.7;
     }
-
+    
     .findings-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
       margin-top: 2rem;
     }
-
+    
     .finding-slot {
       background: var(--gray-mid);
       border: 1px dashed rgba(255,255,255,0.16);
@@ -629,18 +629,27 @@
       gap: 0.8rem;
       border-radius: 10px;
     }
-
+    
     .finding-slot-icon {
       font-size: 1.8rem;
       opacity: 0.3;
     }
-
+    
     .finding-slot-label {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
       color: var(--text-muted);
       letter-spacing: 0.15em;
       text-transform: uppercase;
+    }
+    
+    .findings-img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto 1rem auto;
     }
 
     /* Add your charts here later — example:
@@ -1093,14 +1102,14 @@
 
     <div class="findings-grid">
       <div class="finding-slot">
-        <div class="finding-slot-icon">📈</div>
-        <div class="finding-slot-label">Event-Study Plot</div>
-        <!-- Replace with: <img src="path/to/event_study.png" style="width:100%"> or embed chart -->
+        <img src="images/dropoff_change_manhattan.png" alt="Dropoff change in Manhattan" class="findings-img">
+        <div class="finding-slot-label">Manhattan Dropoff Change</div>
+       # review here 
       </div>
       <div class="finding-slot">
-        <div class="finding-slot-icon">🗺️</div>
-        <div class="finding-slot-label">Choropleth Map</div>
-        <!-- Replace with: <img src="path/to/choropleth.png" style="width:100%"> -->
+        <img src="images/dropoff_change_nyc.png" alt="Dropoff change across NYC" class="findings-img">
+        <div class="finding-slot-label">NYC Dropoff Change</div>
+      # review here 
       </div>
       <div class="finding-slot">
         <div class="finding-slot-icon">📊</div>
