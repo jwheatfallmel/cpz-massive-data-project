@@ -2,7 +2,11 @@
 
 ## Authors 
 
-Ibadat Jarg, Josahn Oginga, Joya Wheatfall-Melvin, Muhammad Saad
+[Ibadat Jarg](https://www.linkedin.com/in/ibadat-jarg-200807160/), [Josahn Oginga](https://www.linkedin.com/in/josahn-oginga/), [Joya Wheatfall-Melvin](https://www.linkedin.com/in/joya-wheatfall-melvin/), [Muhammad Saad](https://www.linkedin.com/in/muhammad-saad-pp/)
+
+## Project Site
+
+🌐 [Visit the Project Live Site ](https://jwheatfallmel.github.io/cpz-massive-data-project/)
 
 ## Overview
 Starting January 5, 2025, New York City implemented a congestion pricing policy that charges vehicles entering a designated Congestion Pricing Zone (CPZ). This zone includes Manhattan south of and including 60th Street, with some highway exemptions.
